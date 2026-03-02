@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My experiment</title>
+    <script src="https://unpkg.com/jspsych@8.2.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-preload@2.1.0"></script>
+    <link href="https://unpkg.com/jspsych@8.2.3/css/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body></body>
+  <script>
+    const jsPsych = initJsPsych();
+/* intialize jsPsych */
+var jsPych = initJsPsych({;
+    on_finish: function() {
+      jsPsych.data.displayData();
+    }
+  });
+
+/* timeline */
+var timeline = [];
+
+/* define welcome message trial */
+var welcome = {
+  type: jsPsychHtmlKeyboardResponse, 
+  stimulus: "Welcome to the experiment. Press any key to begin."
+};
+timeline.push(welcome);
+jsPsych.run(timeline);
+
+/* giving insturctions to participant */
+var instructions = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+    <p>In this experiment, a word will appear in the center 
+    of the screen.</p><p>If the word is <strong>correct</strong>, 
+    press the letter C on the keyboard as fast as you can.</p>
+    <p>If the word is <strong>incorrect</strong>, press the letter F 
+    as fast as you can.</p>
+    <div style='width: 700px;'>
+    <p class='small'><strong>Press the F key</strong></p></div>
+    <p class='small'><strong>Press the J key</strong></p></div>
+    </div>
+    <p>Press any key to begin.</p>
+  `,
+  post_trial_gap: 2000
+};
+timeline.push(instructions);
+/* define trial stimuli array for timeline variables */
+var test_stimuli = [
+{ stimulus: "mouse, pretty, kitty, butterfly", correct_response: 'C'}
+{ stimulus: "msuoe, ptrety, ytikt, flybutter", incorrect_response: 'F'}
+];
+timeline.push(correct_response, incorrect_response)
+/* define fixation and test trials */
+var fixation = {
+  type: jsPsychHtmlKeyboardResponse, 
+  stimulus: '<div style="font-size:60px;">+</div>'
+  choices: "NO_KEYS", 
+  trial_duration: function(){
+    return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
+  }
+};
+var test_procedure = {
+  timeline: [fixation, test],
+  timeline_variables: test_stimuli
+  randomize_order: true,
+  repetitions: 5
+};
+timeline.push(test_procedure);
+
